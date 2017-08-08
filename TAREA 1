@@ -1,0 +1,13 @@
+En el sistema de programacion R
+al momento de graficar , es posible darle diferentes diseños a la misma.
+dentro de esto es posible modificar el tipo de linea, el cual es modificado por medio de la instruccion lty
+y el diferente tipo de lineas es llamado por nombre o bien puede hacerse a travez de numeros.
+y estos codigos son nombrados a continuacion.
+
+el numero cero corresponde a al borde en blanco 
+numero 1  =  linea solida     ____________________
+numero 2  =  linea en lineas pequeñas     --------------
+numero 3  =  linea punteada   .........
+numero 4  =  borde con puntos y lineas .--.--.--.--.--.--.
+numero 5  =  borde de guion largo  __ __ __ __ __
+numero 6  =  borde de doble guion  -_-_-_-_-_-
