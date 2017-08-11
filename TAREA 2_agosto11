@@ -9,7 +9,7 @@
 #      y preguntar por el dato de la matriz en el renglon 3 y columna 3
 
 # 1)
-mat1 <- 11:31   
+mat1 <- 11:30   
 dim(mat1) <- c(5,4)
 View(mat1)
 rownames(mat1) <- c("Escuela 1","Escuela 2","Escuela 3","Escuela 4","Escuela 5")
