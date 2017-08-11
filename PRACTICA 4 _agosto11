@@ -71,7 +71,7 @@ detach(basem) # a partir de aqui ya no esta entendido que todo sea de basem
 # en cada paquete vienen muchas funciones y solo las podemos usar cuando se mandan llamar 
 # son llamadas con libary() o con require()
 
-install.packages(foreign)
+install.packages("foreign")
 install.packages(c("questionr","car"))
 
 # mandar llamar 
