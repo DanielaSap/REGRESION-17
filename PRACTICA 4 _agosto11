@@ -1,0 +1,80 @@
+###  PRACTICA 4 ###
+z <- 11:30
+dim(z) <- c(5,4)
+z
+# para pengar un renglon a la matriz z
+z <- rbind(z,c(1,2,3,4))
+z
+# para pegar un renglon a la matriz z
+z <- cbind(z,c(1,2,3,4,5,6))
+z
+rownames(z) <- c("Escuela 1","Escuela 2","Escuela 3","Escuela 4","Escuela 5","Escuela 6")
+colnames(z) <- c("Toluca","Pachuca","Guadalajara","Monterrey","Jocotitlan")
+z
+View(z)
+# para correccion de datos
+z["Escuela 1","Jocotitlan"] <- 28   #[renglon,columna]<-nuevo dato
+z
+#otra forma de editar
+edit(z)
+z
+#multiplicacion de matrices 
+#     z%*%q
+#transponer matriz 
+#     t(z)
+
+###############################################################################################################
+
+nombres <- c("sergio","juan","ricardo","jessica")
+edad <- c(30,43,21,18)
+altura <- c(170,165,175,172)
+salario <- c(3000,4500,2200,4300)
+basem <- data.frame(nombres,edad,altura,salario)
+View(basem)
+basem [4,3] <- 178  # correcion de dato 
+basem
+# acceso a dato y operacion con ella 
+basem$salario *2.2 -> basem$salario  #multiplicacion de los datos salarios por 2.2 y vuelve a asignar a salario
+basem
+# por falta de una variable 
+peso <- c(83.2,75.2,69.3,70.5)  # nuevo vector 
+basem <- data.frame(nombres,edad,altura,salario,peso)  # al volver a pedirla toma el salario original y 
+#                                                        hay que volver a ejecutar la multlipicacion
+basem
+basem$peso*1.2 -> basem$peso   # mult de datos
+basem
+# redondeo 
+round(basem$peso,3) -> basem$peso
+basem
+# añadir variable
+basem$escol <- c("prepa","lic","ninguno","prim")
+basem
+# añadir sexo donde hombre=1 y mujer = 2
+basem$sexo <- c(1,1,1,2)
+basem
+# para conocer la frecuencia 
+# generar tabla
+table(basem$sexo)
+
+attach(basem)  # a partir de aqui todo lo que jala es de la basem
+table(sexo)
+detach(basem) # a partir de aqui ya no esta entendido que todo sea de basem
+
+###############################################################################################################
+
+# paqueteria foreign jala bases de datos de otros sistemas de programacion 
+# paqueteria questionr expande frecuencias de datos y datos muestrales
+# paqueteria car es para regresion
+
+# install.packages descarga paqueterias de internet 
+
+# en cada paquete vienen muchas funciones y solo las podemos usar cuando se mandan llamar 
+# son llamadas con libary() o con require()
+
+install.packages(foreign)
+install.packages(c("questionr","car"))
+
+# mandar llamar 
+library(foreign)
+library(questionr)
+require(car)
