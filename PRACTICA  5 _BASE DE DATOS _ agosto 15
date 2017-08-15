@@ -1,0 +1,33 @@
+#extraccion de base de datos
+install.packages("foreign")
+install.packages("questionr")
+install.packages("car")
+require(foreign)
+mti2015 <- read.dbf("C:/Users/Sala-D11/Desktop/mti2015_05_17_sdem_precodificado.DBF")
+ 
+# para agrupar datos ¡cuantos son¡¡
+table(mti2015$SEX)
+require(questionr)
+wtd.table(mti2015$SEX,weights = mti2015$FAC_MTI)#tabla con datos expandidos(muestra toda la poblacion)
+# el FAC_MTI dice cuantos niños de cada caso de la muestra representa en la poblacion total
+# el factor de expansion es cuanto representa cada observacion
+ls(mti2015) # para saber que variables tiene
+sum(mti2015$FAC_MTI) #suma toda la columna 
+table(mti2015$R_DEF_ENOE)
+table(mti2015$CS_P12)
+wtd.table(mti2015$CS_P12,weights = mti2015$FAC_MTI)
+# para cruzar variables de los que no saben leer y su edad
+wtd.table(mti2015$EDA,mti2015$CS_P12,weights = mti2015$FAC_MTI) # solo permite cruzar 2 variables
+#muestra: edad / si sabe / no sabe / no supo
+edomex <- subset(mti2015,mti2015$ENT==15) #para filtar usas subset (base,variable) en la base de datos 15 = edomex 
+# para saber las que son mujeres
+edomexmuj <-subset(mti2015,mti2015$ENT==15&mti2015$SEX==2)
+aguascalientes <- subset(mti2015,mti2015$ENT==01)
+zacatecas <- subset(mti2015,mti2015$ENT==32)
+rm(aguascalientes)
+rm(zacatecas)
+agzac <- subset(mti2015,mti2015$ENT=="01" | mti2015$ENT==32) # tiene que ir en comillas por que no lo reconoce
+table(agzac$ENT)
+# para cambiar a tipo numerico 
+as.numeric(mti2015$ENT)
+class(mti2015$ENT)
