@@ -1,0 +1,23 @@
+                               ### TAREA 3 ###
+# ¿ COMO TRANSFORMAR UNA VARIABLE DE TIPO CARACTER A UNA VARIABLE TIPO NUMERICO ?
+
+
+# Para realizar la transformación a numerico de una variable el procedimiento es el siguiente:
+#  variable <- as.numeric(variable)
+# ejemplo
+car <- c("01","02")
+class(car)  # la variable se presenta de tipo caracter
+# transformando :
+car <- as.numeric(car)
+class(car)  # la variable se presenta de tipo numerico
+
+
+# en el caso de transformar una variable de una base de datos el procedimiento es:
+# base$variable <- as.numeric(base$variable)
+# de la práctica anterior ejemplo
+agzac <- subset(mti2015,mti2015$ENT=="01" | mti2015$ENT==32) 
+class(mti2015$ENT)    # la variable ENT es de tipo caracter o factor
+# transfomando
+mti2015$ENT <- as.numeric(mti2015$ENT)
+class(mti2015$ENT)    # la variable ENT es de tipo numerico
+
