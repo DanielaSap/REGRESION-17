@@ -69,3 +69,7 @@ save(tabla1,file = "gpoeda1.csv")
 write.csv(tabla1,file = "gpoeda1.csv")
 
 # tarea: buscar para varias tablas ( serobles99@gmail.com)
+table(mti15$gpoeda1)
+t <- table(mti15$gpoeda1)
+t1 <- barplot(t,col = c("grey","green","skyblue","red"),border = "black",ylab = "CANTIDAD DE PERSONAS",main = "CLASIFICACION POR GRUPOS DE EDADES DE TRABAJO INFANTIL",sub = "FUENTE : INEGI , ELABORACIÓN PROPIA",ylim = c(0,30000))
+
