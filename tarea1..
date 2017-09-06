@@ -1,0 +1,6 @@
+x <- c(59,63,68,72,74,78,83)
+y <- c(118,182,247,208,197,135,132)
+b1 <- (cor(y,x))*((sd(y))/(sd(x)))
+b0 <- mean(y)-b1*mean(x)
+
+# http://webs.um.es/gustavo.garrigos/quim2011/comandos_de_R.pdf
