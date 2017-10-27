@@ -107,4 +107,18 @@ mod_mod1<- lm(calif_total ~ operacion + uso + gama)
 coefficients(mod_mod1)
                 # y = 0.3450 + 0.25op + 0.13us + 0.45 ga
 anova(mod_mod1)
-                # la variable que no es significativa es uso 
+                # la variable que no es significativa es uso pues resulta con una probabilidad de 11.38
+                # por lo tanto como conclusion el uso no es muy significativa
+mod2 <- data.frame(corredor,operacion,gama,calif_total)
+mod_mod2 <- lm(calif_total ~ operacion+gama)
+                # comparacion de R
+# R en 1 caso 
+summary(mod_mod1)
+                # su R resulta de .8284
+summary(mod_mod2)
+                # su R resulta de .8311
+
+# e conclusion omitiendo los valores no significativos de uso 
+# los datos estan mas relacionados a la recta 
+
+
