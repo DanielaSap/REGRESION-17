@@ -1,0 +1,54 @@
+####      EJERCICIO       ####
+# PLANTEAR UN MRM DE MINIMO 4 VARIABLES INDPENDIENTES 
+# A ESTE MODELO REALIZAR LO SIGUIENTE:
+# 1) ANALIZAR LA ANOVA PARA CONOCER LA BONDAD DE AJUSTE 
+# 2) A TRAVES DE LOS COEFICIENTES DETECTAR LA VAR. IND. NO SIGNIFICATIVA , 
+#    ELIMINARLA Y DIAGNOSTICAR EL MODELO A TARES DE LAS PRUEBAS PARA LOS SUPUESTOS 
+
+califtotal <- c(7.8,8.9,9.8,6.5,9.7,6.3,9.7,6.2,9.6,6.4)
+tareas <- c(6.8,7.9,9,4.5,9.2,5.4,9.2,5.9,9.5,5.8)
+asistencias <- c(5.7,5,8,7.9,6.9,8.5,6.9,8.9,6,8.8)
+examen <- c(7.2,8.3,9.5,6.1,9.0,6.1,9.5,6.0,9.0,6.2)
+exposicion <- c(6.2,8,8.8,6,8,5.9,9.8,6.9,7.9,8.9)
+
+califfinal <- data.frame(califtotal,tareas,asistencias,examen,exposicion)
+mod_califfinal <- lm ( califtotal ~ tareas + asistencias + examen + exposicion)
+anova(mod_califfinal)
+
+# la variable no significativa es la exposicion 
+# eliminandola
+
+califfinal2 <- data.frame(califtotal,tareas,asistencias,examen)
+mod_califfinal2 <- lm ( califtotal ~ tareas + asistencias + examen)
+
+califfinal2$fitted.mod_califfinal2 <- fitted(mod_califfinal2) 
+califfinal2$residuals.mod_califfinal2 <- residuals(mod_califfinal2)
+califfinal2$rstudent.mod_califfinal2 <- rstudent(mod_califfinal2)
+
+# SUPUESTO 1 _ NORMALIDAD
+shapiro.test(califfinal2$rstudent.mod_califfinal2)
+# nuestro p-value resulta de 0.4527 cumpliendo el > 0.05 dando positivo el supuesto de normalidad
+# graficamente
+qqnorm(califfinal2$rstudent.mod_califfinal2)
+qqline(califfinal2$rstudent.mod_califfinal2)
+
+# SUPUESTO 2 _ HOMOCEDASTICIDAD
+
+require(lmtest)
+bptest(mod_califfinal2)
+# p- value de 0.8378 >0.05 entonce es aceptado el supuesto
+
+# SUPUESTO 3 _ INDEPENDENCIA O AUTOCORRELACION 
+
+dwtest(mod_califfinal2,alternative = "two.side")
+# dw = 1.2829 , no estando entre 1.5 y 2.5
+# p-value de 0.309 siendo > 0.05
+# cumpliendo con supuesto de independencia por el p-value
+
+# por lo tanto cumple con los tres supuestos 
+
+
+# cumpliendo con supuesto de independencia
+
+# por lo tanto cumple con los tres supuestos
+
