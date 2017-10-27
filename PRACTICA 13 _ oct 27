@@ -1,0 +1,32 @@
+# aplicando los 3 supuestos con el ultimo modelo con las variables significativas 
+
+mod2$fitted.mod_mod2 <- fitted(mod_mod2) # valores ajustados <- agregando a data frame
+mod2$residuals.mod_mod2 <- residuals(mod_mod2)
+mod2$rstudent.mod_mod2 <- rstudent(mod_mod2) # residuos estudentizados
+
+# SUPUESTO 1 _ NORMALIDAD
+shapiro.test(mod2$rstudent.mod_mod2)
+# nuestro p-value resulta de 0.6121 cumpliendo el > 0.05 dando positivo el supuesto de normalidad
+# graficamente
+qqnorm(mod2$rstudent.mod_mod2)
+qqline(mod2$rstudent.mod_mod2)
+
+# SUPUESTO 2 _ HOMOCEDASTICIDAD
+
+require(lmtest)
+bptest(mod_mod2)
+# p- value de 0.11 >0.05 entonce es aceptado el supuesto
+
+# SUPUESTO 3 _ INDEPENDENCIA O AUTOCORRELACION 
+
+dwtest(mod_mod2,alternative = "two.side")
+# dw = 2.48 , estando entre 1.5 y 2.5
+# p-value de 0.62 siendo > 0.05
+# cumpliendo con supuesto de independencia
+
+# por lo tanto cumple con los tres supuestos 
+
+
+# cumpliendo con supuesto de independencia
+
+# por lo tanto cumple con los tres supuestos 
