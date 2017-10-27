@@ -114,11 +114,11 @@ mod_mod2 <- lm(calif_total ~ operacion+gama)
                 # comparacion de R
 # R en 1 caso 
 summary(mod_mod1)
+anova(mod_mod1)
                 # su R resulta de .8284
 summary(mod_mod2)
+anova(mod_mod2)
                 # su R resulta de .8311
 
 # e conclusion omitiendo los valores no significativos de uso 
 # los datos estan mas relacionados a la recta 
-
-
