@@ -90,3 +90,7 @@ sw <- data.frame(fer,ed,ex,ca)
 mod2 <- lm(fer~ed + ex + ca)
 summary(mod2)
 AIC(mod2)
+
+step(mod2,direction="backward")
+step (mod2,direction = "both")
+step(mod2,direction = "forward")
