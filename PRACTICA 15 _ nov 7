@@ -81,3 +81,12 @@ require(datasets);data(swiss);?swiss # datos de suiza
 # una vez que hagan la descripcion del modelo completo aplicar el criterio AIC para comparar los modelos
 # posibles de su modelo completo,
 # ya que haya elegido un modelo con base en el AIC aplicarlo y describir la fn summary con su mejor modelo AIC
+fer <- swiss$Fertility
+ed <- swiss$Education
+ex <-swiss$Examination
+ca <- swiss$Catholic
+
+sw <- data.frame(fer,ed,ex,ca)
+mod2 <- lm(fer~ed + ex + ca)
+summary(mod2)
+AIC(mod2)
