@@ -1,0 +1,38 @@
+# SWISS
+# MEDICION ESTANDARIZADA DE LA FECUNDIDAD E INDICADORES SOCIOECONOMICOS PARA CADA UNA DE LAS 47 PROVINCIAS
+# FRANCAFONAS DE SUIZA ALREDEDOR DE 1888
+require(stats) # llama libreria
+base <- data.frame(swiss)
+View(base)
+names(base)
+pairs(base) # grafica variable por pares (analisis exploratorio)
+cor(base)
+# PROPUESTA MODELO DE REGRESION MULTIPLE CON BASE EN EL ANALISIS EXPLORATORIO
+regresion1 <- lm(Infant.Mortality ~ Fertility , data = base) # y~x # dependiente ~ independientes
+# MODELO PROPUESTO ANTERIORMENTE
+nulo <- lm(Fertility ~ 1, data = base) # modelo nulo, variable con constante cualquiera
+completo <- lm(Fertility ~.,data = base) # modelo completo , el punto es para poner todas las variable indp
+                                        # es igual a lm(fertility~infant.mortality + education + examination + agriculture + catholic)
+summary(nulo)
+step(nulo,scope = list(lower=nulo,upper=completo),direction = "forward") # aplica AIC del modelo con scope da combinaciones con metodologia forwar
+summary(completo)
+help(step)
+
+
+# para conocer las bases de datos
+library(help = "datasets")
+require(stats)
+bases <- data.frame(airquality)
+bases <- na.omit(bases)
+View(bases)
+names(bases)
+pairs(bases)
+cor(bases)
+regresion2 <-lm(Temp ~ Month,data = bases)
+nulo <- lm(Temp ~ 1 ,data = bases)
+completo <- lm(Temp ~ ., data = bases)
+summary(nulo)
+step(nulo,scope = list(lower = nulo,upper = completo),direction = "forward")
+summary(completo)
+# las variables significativas resultan ozone y month 
+# con una r del 58%
