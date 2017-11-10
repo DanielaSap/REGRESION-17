@@ -1,0 +1,103 @@
+# la correlacion da la intensidad de relacion
+# el modelo nulo permite saber el mejor modelo de referencia
+#   variable dependiente contra constante
+#   para modelo mas basico y poder contrastarlo contra otros
+#   modelo mas simple
+# el modelo completo hace variable dependiente contra todas las independientes
+#   modelo mas complejo
+# step(modelo mas simple,scope = list(lower=simple,upper=complejo),direction = "metodo")
+#   corre cada una de las variable con todas las posibilidades y se queda con las que sea menor
+#   para volver a hacer la combinacion 
+#   sum of sq = suma de cuadrados
+#   el mejor es el AIC menor
+#   y se que da hasta donde ya no aumente 
+#   y ese es el mejor modelo propuesto , y saca coeficientes
+
+###################################################################################################
+
+# COPIO EL MEJOR MODELO 
+mod1 <- lm(formula = Fertility ~ Education + Catholic + Infant.Mortality + 
+     Agriculture, data = base)
+summary(mod1)
+# error residual estandar de 7.16 , bueno por ser cercano a cero
+# una r cuadrada ajustada de .67 , entre 60 y 70 % es buen modelo 
+# la significancia de las variables en el modelo es con el estadistico t (Pr)
+#       es decir tiene relacion con la viariable dependiente, aporta al modelo la indep.
+# el estadistico f da la bondad de ajuste , debe ser mayor a un y el p-value menor a 0.05 si no se rechaza 
+#       la hipotesis nula (F-static) / (P-value) o se acepta la alternativa
+# hasta aqui hay un buen modelo 
+
+# EN GENERAL LO QUE SE DEBE REVISAR EN EL SUMMARY DEL MODELO ES:
+# 1.- R2 AJUSTADA, EXPLICA LA VARIABILIDAD DEL MODELO (>60%)
+# 2.- ERROR ESTANDAR , (CERCANO A CERO)
+# 3.- SIGNIFICANCIA DE LAS VARIABLES INDEP. DEL ESTAIDSTICO t (P-VALUE < 0.05)
+# 4.- ESTADISTICO (f>1)(P-VALUE<0.05)
+
+# TODO LO ANTERIOR NO HACE QUE SI NO SE CUMPLEN ENTONCES NO SE ACEPTA 
+# LO UNICO QUE HACE QUE NO SE ACEPTE EL MODELO SON LOS SUPUESTOS 
+
+# PRUEBA DE LOS SUPUESTOS (FORMALES)
+
+# HIPOTESIS NULA, LOS ERRORES SE DISTRIBUYEN NORMALMENTE (ho)
+# HIPOTESIS ALTERNATIVA NO SE DISTRIBUYEN NORMALMENTE (ha)
+
+# ESPERAMOS NO RECHAZAR LA HIPOTESIS NULA CON UN P-VALUE > 0.05
+# esperamos sea > 0.05 , para cumplir normalidad
+shapiro.test(rstudent(mod1)) # prueba shapiro / PERMITE VER NORMALIDAD
+# resulta un p-values de 0.48, no rechzamos la ho , los errores se distribuyen normal
+
+require(lmtest)
+bptest(mod1) # prueba breusch pagan / PERMITE VER AUTOCORRELACION
+# esperamos sea p-value > 0.05, para no rechazar ho
+# resulta un p-value de 0.53, entonces no se rechaza la ho y cumple supuesto de autocorrelacion
+# este modelo permite saber que no hay mas de 2 variables que aporten lo mismo al modelo  
+
+dwtest(mod1,alternative="two.side") # prueba darwin / PERMITE VER INDEPENDENCIA
+# ho dice que errores son independiente
+# esperamos p-value > 0.05 y/o valor DW entre 1.5 y 2.5
+# en este cado como esta muy cercana a los parametros podemos aceptarla por que la prueba no es tan estricta
+
+# para la interpretacion de coeficientes 
+summary(mod1)
+# se encuentran en la columna estimate
+# agriculture es -0.15 es decir hay una disminucion en fecundidad por un aumentos de 1% de hombres en agricultura
+# manteniendose constante las demas
+# para educacion es -0.98 
+# es decir por cada aumento de 1% de la educacion la fecundidad reduce en .98
+# apara catolica es 0.12
+# es decir por cada aumento de 1%  de la poblacion que sea catolico , la fecundidad aumenta en 0.12
+# para mortalidad infantil es 1.07
+# es decir por cada aumento de 1% de la mortalidad infsntil, la fecundidad aumenta en 1.07
+
+#####################################################################################################
+# EJERCICIO
+base1 <- data.frame(Seatbelts)
+View(base1)
+names(base1)
+pairs(base1)
+cor(base1)
+#regresion2 <-lm(driv ~ Month,data = base1)
+nulo <- lm(drivers ~ 1 ,data = base1)
+completo <- lm(drivers ~ ., data = base1)
+summary(nulo)
+step(nulo,scope = list(lower = nulo,upper = completo),direction = "forward")
+summary(completo)
+# el mejor modelo
+regresion2 <- lm(formula = drivers ~ DriversKilled + front + rear + law + VanKilled, 
+   data = base1)
+summary(regresion2)
+# error residual estandar de 103, siendo malo por ser lejano a cero 
+# una r cuadrada ajustada de .87
+# un p-value de 2.2e-16
+shapiro.test(rstudent(regresion2))
+# resulta un p-value de 0.99 > 0.05
+bptest(regresion2) 
+# resulta un p-value de 0.02 no > 0.05, es rechazada la autocorrelacion
+
+# EL MODELO SE RECHAZA
+
+###############################################################################################
+
+# TAREA
+# ANTES DE LA CLASE PLANTEAR UN MODELO DE REGRESION MULTIPLE DE ALGUN TEMA DE INTERESE Y QUE 
+# PASE LOS SUPUESTOS PARA INTERPRETAR LOS COEFICIENTES
