@@ -1,0 +1,46 @@
+#View(Libro1)
+#base <- data.frame(Libro1$sit_eco,Libro1$pos_vac,Libro1$pos_aho,Libro1$pos_com)
+#View(base)
+#names(base)
+#pairs(base)
+#cor(base)#
+
+library(help = "datasets")
+require(stats)
+chik <- data.frame(ChickWeight)
+View(chik)
+names(chik)
+pairs(chik)
+chik$Chick <- as.numeric(chik$Chick)
+chik$Diet <- as.numeric(chik$Diet)
+cor(chik)
+nulo <- lm(Chick~1,data = chik)
+completo <- lm(Chick~.,data = chik)
+summary(nulo)
+summary(completo)
+step(nulo,scope = list(lower = nulo,upper = completo),direction = "forward")
+regresion <- lm(formula = Chick ~ Diet + weight + Time, data = chik)
+summary(regresion)
+# error residual de 3.5
+# r2 de .93
+# p-value de 2.2e-16
+shapiro.test(rstudent(regresion))
+# p-value de 1.02e-05
+install.packages("lmtest")
+require(lmtest)
+bptest(regresion)
+#p-value de 2.2e-16
+dwtest(regresion,alternative="two.side")
+#p-value de 2.2e-16
+#DW = 0.22  # no pasa este DW pero podemos aceptarlo por el p-value
+
+# INTERPRETACION DE COEFICIENTES
+summary(regresion)
+# el modelo hace un analisis de los pollos en relacion a la dieta que llevan, el peso  
+# y la edad o tiempo que tienen
+
+# la interpretacion es que 
+# por cada punto que se mejore la dieta de un pollo, entonces su condicion mejorara en 10 puntos
+# por cada punt que aumente en peso el pollo, entonces su condicion mejarara en 0.06
+# pero por el contarario por cada punto que aumente la edad del pollo , entonces su condicion 
+#       se vera reducida en 0.5 puntos
