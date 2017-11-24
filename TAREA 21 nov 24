@@ -1,0 +1,79 @@
+cajas <- c(10,15,10,20,25,18,12,14,16,22,24,17,13,30,24)
+distancia <- c(30,25,40,18,22,31,26,34,29,37,20,25,27,23,33)
+tiempo <- c(24,27,29,31,25,33,26,28,31,39,33,30,25,42,40)
+estudio <- data.frame(cajas,distancia,tiempo)
+pairs(estudio)
+cor(estudio)
+regnull <- lm(tiempo~1,data=estudio)
+allreg <- lm(tiempo~.,data=estudio)
+step(regnull,scope = list(lower=regnull,upper=allreg),direction = "forward")
+modelo <- lm(formula = tiempo ~ cajas + distancia, data = estudio)
+summary(modelo)
+
+# ERROR DE 3.14
+# R CUADRADA DE 69%
+# F DE 16.8
+# P-VALUE DE 0.0033
+
+####################### PRUEBAS #######################
+
+shapiro.test(rstudent(modelo))
+ # P-VALUE DE 1.98e-6 < 0.05
+ # NO PSA PRUEBA SHAPIRO
+
+require(lmtest)
+bptest(modelo)
+ # P-VALUES DE 0.26 > 0.05
+ # PASA LA PRUEBA
+
+dwtest(modelo,alternative="two.sided")
+ # P-VALUE 0.20 > 0.05
+
+####################### CORRECCION DE NORMALIDAD #######################
+install.packages("car")
+require(car)
+outlierTest(allreg,cutoff=.05,n.max=5,order=T)# te da la observacion que esta mal
+
+ # LA OBSERVACION QUE ESTA MAL ES LA OBSERVACION NUMERO 5
+
+influencePlot(allreg,id.n=5)
+
+# AHORA PARA CONFIRMAR LOS CASOS QUE TIENEN IMPLICACIONES
+# EN EL MODELO SE APLICA EL GRAFICO DE DISTANCIAS DE COOK 
+modelo2<- cooks.distance(allreg)
+etique <- rownames(cajas)
+install.packages("faraway")
+require(faraway)
+halfnorm(modelo2,labs=etique,ylab="dist cook")
+
+# aqui esperamos un dato mayor a 1 para comprobar que si es atipico
+# el numero mas alto el 5 por lo que se debe eliminar
+# y volver a aplicar modelo 
+
+estudio2 <- estudio[-c(5,5),]
+estudio2
+pairs(estudio2)
+cor(estudio2)
+regnull2 <- lm(tiempo~1,data=estudio2)
+allreg2 <- lm(tiempo~.,data=estudio2)
+step(regnull2,scope = list(lower=regnull2,upper=allreg2),direction = "forward")
+modelo2 <- lm(formula = tiempo ~ cajas + distancia, data = estudio2)
+summary(modelo2)
+# ERROR DE 1.08
+# R CUADRADA DE 96%
+# F DE 168.9
+# P-VALUE DE 5.53e-09
+
+####################### PRUEBAS #######################
+
+shapiro.test(rstudent(modelo2))
+# P-VALUE DE .1944 > 0.05
+# PASA PRUEBA SHAPIRO
+
+require(lmtest)
+bptest(modelo2)
+# P-VALUES DE 0.59 > 0.05
+# PASA LA PRUEBA
+
+dwtest(modelo2,alternative="two.sided")
+# P-VALUE 0.16 > 0.05
