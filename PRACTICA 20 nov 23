@@ -139,7 +139,7 @@ dwtest(definitive,alternative="two.sided")
 # no cumple normalidad y hay que corregir
 install.packages("car")
 require(car)
-outlierTest(allreg,cutoff=.05,n.max=5,order=T)# te da la observacion que esta mal
+outlierTest(allreg,cutoff=.05,n.max=5,order=T)# te da la observacion que esta mal # PRUEBA DE CASOSA ATIPICOS
 influencePlot(allreg,id.n=5)
 # LA OBSERVACION 5 SE INDICA CON PROBLEMAS
 # AHORA PARA CONFIRMAR LOS CASOS QUE TIENEN IMPLICACIONES
