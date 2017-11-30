@@ -1,0 +1,66 @@
+require(foreign)
+base <- data.frame(read.spss("C:/Users/Dany/Downloads/solorural.sav"))
+
+# ENCUENTA MODEULO DE TRABAJO INFANTIL DE INEGI 2013
+# NIÑAS DE 5 A 17 AÑOS DE ZONAS RURALES
+# BASE DE SOCIODEMOGRAFICO
+
+# VARIABLE DEPENDIENTE = PERSONAS PARA LA QUE TRABAJA campo 47 "131"
+# CATEGORIAS 
+# 1.- familiar 
+# 2.- no familiar
+# 3.- cuenta propia
+
+# INDEPENDIENTE
+
+# JEFE DEL HOGAR
+# 1 hombre
+# 2 mujer
+# TAMAÑO HOGAR
+# 1 DE 1 A 3 PERSONAS
+# 2 DE 4 A 5 PERSONAS
+# 3 DE 6 A 7 PERSONAS
+# 4 DE 8 O MAS PERSONAS
+
+ 
+names(base)
+persona <- base$t_per
+View(persona)
+persona <- as.numeric(persona)
+sexo <- base$sex
+sexo <- as.numeric(sexo)
+edad <- base$eda1
+apoyo <- base$t_apo1
+apoyo <- as.numeric(apoyo)
+ocupacion <- base$c_ocu
+ocupacion<- as.numeric(ocupacion)
+hogar <- base$tam_hog
+hogar <- as.numeric(hogar)
+datos <- data.frame(apoyo,edad,hogar,ocupacion,persona,sexo)
+datos <- na.omit(datos)
+
+names(datos)
+pairs(datos)
+cor(datos)
+regnull <- lm(persona~1,data = datos)
+allreg <- lm(persona~.,data = datos)
+step(regnull,scope = list(lower=regnull,upper=allreg),direction = "forward")
+modelo <- lm(formula = persona ~ ocupacion + apoyo + edad + sexo + hogar, 
+             data = datos)
+summary(modelo)
+# R DE 83%
+# ERROR DE .19
+shapiro.test(rstudent(modelo))
+# ERROR
+require(lmtest)
+bptest(modelo)
+# P-VALUE DE 2.2E-16
+dwtest(modelo,alternative="two.sided")
+# NO PASA 
+# P-VALUE DE 0.0042
+
+modelo.logit<-glm(persona ~ ocupacion + apoyo + edad + sexo + hogar, data = datos,family="gaussian")
+summary(modelo.logit)
+# AIC DE -4041.3
+exp(coefficients(modelo.logit))
+# iteraciones 2
